@@ -1,7 +1,13 @@
-#include 
+// homework_01.11.2021_4.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+#include <string>
+
+
 std::string tens(long long n)
 {
-	std::string x;
+    std::string x;
 	switch (n)
 	{
 	case 10:
@@ -310,6 +316,14 @@ int main()
 		number += onenumbm(tmp);
 		break;
 	}
+	}
+	if (1000 <= n && n <= 9999) {
+		int tmp = n / 1000;
+		number = onenumbf(tmp) + number;
+	}
+	else if (1000000 <= n && n <= 9999999) {
+		int tmp = n / 1000000;
+		number = onenumbm(tmp) + number;
 	}
 	std::cout << number;
 }
