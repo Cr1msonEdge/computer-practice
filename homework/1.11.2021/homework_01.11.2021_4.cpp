@@ -1,11 +1,42 @@
-﻿// homework_01.11.2021_4.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
-#include <string>
-
-
-
+#include 
+std::string tens(long long n)
+{
+	std::string x;
+	switch (n)
+	{
+	case 10:
+		x = "десять ";
+		break;
+	case 11:
+		x = "одиннадцать ";
+		break;
+	case 12:
+		x = "двенадцать ";
+		break;
+	case 13:
+		x = "тринадцать ";
+		break;
+	case 14:
+		x = "четырнадцать ";
+		break;
+	case 15:
+		x = "пятнадцать ";
+		break;
+	case 16:
+		x = "шестнадцать ";
+		break;
+	case 17:
+		x = "семнадцать ";
+		break;
+	case 18:
+		x = "восемнадцать ";
+		break;
+	case 19:
+		x = "девятнадцать ";
+		break;
+	}
+	return x;
+}
 std::string onenumbm(long long n)
 {
 	std::string x;
@@ -161,7 +192,7 @@ int main()
 	{
 		std::cout << "Введите положительное число, не превышающее одного миллиарда: ";
 		std::cin >> n;
-	} while (n < 1 or n > 1000000000);
+	} while (n < 1 || n > 1000000000);
 
 	if (n == 1000000000)
 	{
@@ -186,13 +217,22 @@ int main()
 	}
 	case 8:
 	{
-		int tmp = n / 10000000 % 10;
-		number += doublenumb(tmp);
+		int tmp = (n / 1000 / 1000 % 100);
+		if (tmp >= 10 && tmp <= 19)
+		{
+			number += tens(tmp);
+		}
+		else
+		{
+			tmp = (n / 10 / 1000 / 1000) % 10;
+			number += doublenumb(tmp);
+			tmp = n / 1000 / 1000% 10;
+			number += onenumbm(tmp);
+		}
 	}
 	case 7:
 	{
-		int tmp = n / 1000000 % 10;
-		number += onenumbm(tmp);
+		int tmp = n / 1000 / 1000 % 100;
 		if (tmp == 1)
 		{
 			number += "миллион ";
@@ -213,13 +253,23 @@ int main()
 	}
 	case 5:
 	{
-		int tmp = n / 10000 % 10;
-		number += doublenumb(tmp);
+		int tmp = (n /1000 % 100);
+		if (tmp >= 10 && tmp <= 19)
+		{
+			number += tens(tmp);
+		}
+		else
+		{
+			tmp = (n / 10 / 1000) % 10;
+			number += doublenumb(tmp);
+			tmp = n / 1000 % 10;
+			number += onenumbm(tmp);
+		}
 	}
 	case 4:
 	{
-		int tmp = n / 1000 % 10;
-		number += onenumbf(tmp);
+		
+		int tmp = n / 1000 % 100;
 		if (tmp == 1)
 		{
 			number += "тысяча ";
@@ -240,9 +290,20 @@ int main()
 	}
 	case 2:
 	{
-		int tmp = (n / 10) % 10;
-		number += doublenumb(tmp);
-	}
+		int tmp = (n % 100);
+		if (tmp >= 10 && tmp <= 19)
+		{
+			number += tens(tmp);
+		}
+		else
+		{
+			tmp = (n / 10) % 10;
+			number += doublenumb(tmp);
+			tmp = n % 10;
+			number += onenumbm(tmp);
+		}
+		break;
+	}	
 	case 1:
 	{
 		int tmp = n % 10;
