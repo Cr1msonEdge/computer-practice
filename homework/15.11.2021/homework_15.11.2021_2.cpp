@@ -1,48 +1,52 @@
-﻿// homework_15.11.2021_2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
 #include <iostream>
+#include <vector>
+#include <string>
 
-void shiftArray(int* M, int n, int k)
-{
-    int* A = new int[n];
-    for (int i = 0; i < n; ++i)
-    {
-        A[i] = M[(k + i) % n];
-    }
-    for (int i = 0; i < n; ++i)
-    {
-        M[i] = A[i];
-    }
-}
-int main()
-{
-    setlocale(LC_ALL, "rus");
+
+template <typename T>
+
+void reverse_array(T* arr,  int start,  int end) {
+    --start;
+    --end;
     int n = 0;
-    do
+    for ( int i = start; i < start + ((end - start + 1)) / 2; ++i)
     {
-        std::cout << "Введите размер массива - ";
-        std::cin >> n;
-    } while (n < 0);
-
-    int* M = new int[n];
-
-    std::cout << "Поочерёдно введите элементы массива: ";
-    for (int i = 0; i < n; ++i)
-    {
-        std::cin >> M[i];
+        std::swap(arr[i], arr[end - n]);
+        ++n;
     }
+}
+template <typename T>
 
-    int k = 0;
-    
-    std::cout << "Введите размер сдвига - ";
-    std::cin >> k;
-
-    shiftArray(M, n, k);
-    for (int i = 0; i < n; ++i)
+void shiftArray(T A[], int n, int k)
+{
+    int shift;
+    std::cout << "Enter the shift index: ";
+    std::cin >> shift;
+    if (shift < 0)
     {
-        std::cout << M[i] << ' ';
+        shift = -shift % n;
+        shift = n - shift;
+
+    }
+    else
+        shift %= n;
+    if (shift)
+    {   // 1 2 3 4 5 .пусть сдвиг на 2
+        reverse_array(A, 1, shift); // 2 1 | 3 4 5
+        reverse_array(A, shift + 1, n); // 2 1 | 5 4 3
+        reverse_array(A, 1, n); // 3 4 5 1 2 
     }
 
 }
 
+
+int main() {
+    int arr[5] = { 1,2,3,4,5 };
+    int len;
+    std::cout << "Enter the length of array" << std::endl;
+    std::cin >> len;
+    shiftArray(arr, len, 2);
+    for (int i = 0; i < len; ++i) {
+        std::cout << arr[i] << ' ';
+    }
+}
