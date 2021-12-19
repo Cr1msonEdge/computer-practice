@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-void swapcol(double** arr, double n, int col1, int col2) { //нужно чтобы получить ненулевые элементы на главной диагонали
+void swapcol(double** arr, double n, int col1, int col2) { //РЅСѓР¶РЅРѕ С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ РЅРµРЅСѓР»РµРІС‹Рµ СЌР»РµРјРµРЅС‚С‹ РЅР° РіР»Р°РІРЅРѕР№ РґРёР°РіРѕРЅР°Р»Рё
 	for (int i = 0; i < n; ++i) {
 		std::swap(arr[col1], arr[col2]);
 	}
@@ -25,7 +25,7 @@ int digitcount(double x)
 			return ++count;
 		return count;
 	}
-	
+
 	if (double(x) != int(x)) // -2.7
 	{
 		++count;
@@ -33,7 +33,7 @@ int digitcount(double x)
 		{
 			x *= 10;
 		}
-		
+
 		while ((int)x != 0)
 		{
 			++count;
@@ -42,35 +42,17 @@ int digitcount(double x)
 		if (x < 0) return ++count;
 		return count;
 	}
-	
+
 }
 
-int maxdigitcount(double** M, int n, int m)
-{
-	int max = 0;
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = 0; j < m; ++j)
-		{
-			max = (max > digitcount(M[i][j]) ? max : digitcount(M[i][j]));
-		}
-	}
-	return max;
-}
+
 
 void printmatrix(double** M, int n, int m)
 {
-	int spaces = maxdigitcount(M, n, m);
-	std::cout << spaces << std::endl;
 	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < m; ++j)
 		{
-			for (int k = 0; k < (spaces - digitcount(M[i][j])); ++k)
-			{
-				std::cout << ' ';
-			}
-			
 			std::cout << M[i][j] << ' ';
 		}
 		std::cout << std::endl;
@@ -78,15 +60,15 @@ void printmatrix(double** M, int n, int m)
 }
 
 double determinant(double** arr, int n) {
-	int detsign = 1; // в случае перестановки стобцов меняет знак определителя
+	int detsign = 1; // РІ СЃР»СѓС‡Р°Рµ РїРµСЂРµСЃС‚Р°РЅРѕРІРєРё СЃС‚РѕР±С†РѕРІ РјРµРЅСЏРµС‚ Р·РЅР°Рє РѕРїСЂРµРґРµР»РёС‚РµР»СЏ
 	double** M = matrixcopy(arr, n, n);
 	double a;
-	int coltoswap = 0; // запоминает столбец, который нужно свапнуть
+	int coltoswap = 0; // Р·Р°РїРѕРјРёРЅР°РµС‚ СЃС‚РѕР»Р±РµС†, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РЅРѕ СЃРІР°РїРЅСѓС‚СЊ
 	bool check;
 
 	for (int i = 0; i < n - 1; ++i) {
 
-		if (M[i][i] == 0) {//проверям, нулевой ли элемент на главной диагонали
+		if (M[i][i] == 0) {//РїСЂРѕРІРµСЂСЏРј, РЅСѓР»РµРІРѕР№ Р»Рё СЌР»РµРјРµРЅС‚ РЅР° РіР»Р°РІРЅРѕР№ РґРёР°РіРѕРЅР°Р»Рё
 			check = true;
 			for (int j = i + 1; j < n; ++j) {
 				if (M[i][j] != 0) {
@@ -95,7 +77,7 @@ double determinant(double** arr, int n) {
 					break;
 				}
 			}
-			if (check) { // если не нашлось, то опред равен 0
+			if (check) { // РµСЃР»Рё РЅРµ РЅР°С€Р»РѕСЃСЊ, С‚Рѕ РѕРїСЂРµРґ СЂР°РІРµРЅ 0
 				deletematrix(M, n);
 				return 0;
 			}
@@ -104,8 +86,8 @@ double determinant(double** arr, int n) {
 		}
 
 		for (int p = i + 1; p < n; ++p) {
-			a = M[p][i] / M[i][i]; // коэф, с которым нужно вычитать
-			for (int r = i; r < n; ++r) {// начинаем с i, поскольку слева уже нули
+			a = M[p][i] / M[i][i]; // РєРѕСЌС„, СЃ РєРѕС‚РѕСЂС‹Рј РЅСѓР¶РЅРѕ РІС‹С‡РёС‚Р°С‚СЊ
+			for (int r = i; r < n; ++r) {// РЅР°С‡РёРЅР°РµРј СЃ i, РїРѕСЃРєРѕР»СЊРєСѓ СЃР»РµРІР° СѓР¶Рµ РЅСѓР»Рё
 				M[p][r] -= a * M[i][r];
 			}
 		}
@@ -126,22 +108,24 @@ double** inversematrix(double** arr, int n)
 	double det = determinant(arr, n);
 	if (det == 0)
 	{
-		throw "Нет обратной матрицы";
+		throw "РќРµС‚ РѕР±СЂР°С‚РЅРѕР№ РјР°С‚СЂРёС†С‹";
 	}
 	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < n; ++j)
 		{
-			double** D = minormatrix(arr, n, j, i); // j i, потому что нужна транспонированная
+			double** D = minormatrix(arr, n, j, i); // j i, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РЅСѓР¶РЅР° С‚СЂР°РЅСЃРїРѕРЅРёСЂРѕРІР°РЅРЅР°СЏ
 			M[i][j] = double(determinant(D, n - 1)) / det;
 			deletematrix(D, n - 1);
-			if ((i + j) % 2)// сумма индексов столбцов и строк
+			if ((i + j) % 2)// СЃСѓРјРјР° РёРЅРґРµРєСЃРѕРІ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє
 			{
 				M[i][j] *= -1;
 			}
-			M[i][j] = int(M[i][j] * 100);
-			M[i][j] /= 100;
-			//во избежании появления -0
+			if (M[i][j] == 0)
+			{ 
+				M[i][j] = 0;
+			}
+			//РІРѕ РёР·Р±РµР¶Р°РЅРёРё РїРѕСЏРІР»РµРЅРёСЏ -0
 		}
 	}
 	return M;
