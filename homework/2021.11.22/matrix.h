@@ -49,7 +49,7 @@ void deletematrix(T** M, int n)
 /////////
 
 template <typename T>
-double** matrixcopy(T** M, int n, int m) // копируем матрицу, для удобства
+double** matrixcopy(T** M, int n, int m) // РєРѕРїРёСЂСѓРµРј РјР°С‚СЂРёС†Сѓ, РґР»СЏ СѓРґРѕР±СЃС‚РІР°
 {
 	double** A = creatematrix<double>(n, m);
 	for (int i = 0; i < n; ++i)
