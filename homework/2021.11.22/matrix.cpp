@@ -8,44 +8,6 @@ void swapcol(double** arr, double n, int col1, int col2) { //нужно чтоб
 	}
 }
 
-int digitcount(double x)
-{
-	x = int(x * 100);
-	x /= 100;
-	int count = 0;
-	if (0 < abs(x) && abs(x) < 1) // -0.8
-	{
-		count += 2;
-		while (double(x) != int(x))
-		{
-			x *= 10;
-			++count;
-		}
-		if (x < 0)
-			return ++count;
-		return count;
-	}
-
-	if (double(x) != int(x)) // -2.7
-	{
-		++count;
-		while (double(x) != int(x))
-		{
-			x *= 10;
-		}
-
-		while ((int)x != 0)
-		{
-			++count;
-			x /= 10;
-		}
-		if (x < 0) return ++count;
-		return count;
-	}
-
-}
-
-
 
 void printmatrix(double** M, int n, int m)
 {
@@ -122,7 +84,7 @@ double** inversematrix(double** arr, int n)
 				M[i][j] *= -1;
 			}
 			if (M[i][j] == 0)
-			{ 
+			{
 				M[i][j] = 0;
 			}
 			//во избежании появления -0
