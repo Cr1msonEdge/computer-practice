@@ -1,92 +1,94 @@
-#pragma once
+#include "matrix.h"
 #include <iostream>
+#include <cmath>
 
-void swapcol(double** arr, double n, int col1, int col2);
-double determinant(double** arr, int n);
-double** inversematrix(double** arr, int n);
-int digitcount(double x);
-int maxdigitcount(double** M, int n, int m);
-void printmatrix(double** M, int n, int m);
-
-template <typename T>
-T** creatematrix(int n, int m)
-{
-	T** M = new T * [n];
-	for (int i = 0; i < n; ++i)
-	{
-		M[i] = new T[m];
+void swapcol(double** arr, double n, int col1, int col2) { //нужно чтобы получить ненулевые элементы на главной диагонали
+	for (int i = 0; i < n; ++i) {
+		std::swap(arr[col1], arr[col2]);
 	}
-	return M;
 }
 
-template <typename T>
-T** inputmatrix(int n, int m)
+
+void printmatrix(double** M, int n, int m)
 {
-	T** M = creatematrix<T>(n, m);
 	for (int i = 0; i < n; ++i)
 	{
 		for (int j = 0; j < m; ++j)
 		{
-			std::cout << '(' << i + 1 << ", " << j + 1 << "): ";
-			std::cin >> M[i][j];
+			std::cout << M[i][j] << ' ';
+		}
+		std::cout << std::endl;
+	}
+}
+
+double determinant(double** arr, int n) {
+	int detsign = 1; // в случае перестановки стобцов меняет знак определителя
+	double** M = matrixcopy(arr, n, n);
+	double a;
+	int coltoswap = 0; // запоминает столбец, который нужно свапнуть
+	bool check;
+
+	for (int i = 0; i < n - 1; ++i) {
+
+		if (M[i][i] == 0) {//проверям, нулевой ли элемент на главной диагонали
+			check = true;
+			for (int j = i + 1; j < n; ++j) {
+				if (M[i][j] != 0) {
+					check = false;
+					coltoswap = j;
+					break;
+				}
+			}
+			if (check) { // если не нашлось, то опред равен 0
+				deletematrix(M, n);
+				return 0;
+			}
+			swapcol(M, n, i, coltoswap);
+			detsign *= -1;
+		}
+
+		for (int p = i + 1; p < n; ++p) {
+			a = M[p][i] / M[i][i]; // коэф, с которым нужно вычитать
+			for (int r = i; r < n; ++r) {// начинаем с i, поскольку слева уже нули
+				M[p][r] -= a * M[i][r];
+			}
+		}
+	}
+
+	double result = 1;
+	for (int i = 0; i < n; ++i) {
+		result *= M[i][i];
+	}
+
+	deletematrix(M, n);
+	return (result * detsign);
+}
+
+double** inversematrix(double** arr, int n)
+{
+	double** M = creatematrix<double>(n, n);
+	double det = determinant(arr, n);
+	if (det == 0)
+	{
+		throw "Нет обратной матрицы";
+	}
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			double** D = minormatrix(arr, n, j, i); // j i, потому что нужна транспонированная
+			M[i][j] = double(determinant(D, n - 1)) / det;
+			deletematrix(D, n - 1);
+			if ((i + j) % 2)// сумма индексов столбцов и строк
+			{
+				M[i][j] *= -1;
+			}
+			if (M[i][j] == 0)
+			{
+				M[i][j] = 0;
+			}
+			//во избежании появления -0
 		}
 	}
 	return M;
-}
-
-
-
-template <typename T>
-void deletematrix(T** M, int n)
-{
-	for (int i = 0; i < n; ++i)
-	{
-		delete[] M[i];
-	}
-	delete[] M;
-}
-
-/////////
-
-template <typename T>
-double** matrixcopy(T** M, int n, int m) // копируем матрицу, для удобства
-{
-	double** A = creatematrix<double>(n, m);
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = 0; j < m; ++j)
-		{
-			A[i][j] = double(M[i][j]);
-		}
-	}
-	return A;
-}
-
-template <typename T>
-T** minormatrix(T** arr, int n, int row, int col)
-{
-	T** A = creatematrix<T>(n - 1, n - 1);
-	for (int i = 0; i < row; ++i)
-	{
-		for (int j = 0; j < col; ++j)
-		{
-			A[i][j] = arr[i][j];
-		}
-		for (int j = col + 1; j < n; ++j)
-		{
-			A[i][j - 1] = arr[i][j];
-		}
-	}
-	for (int i = row + 1; i < n; ++i)
-	{
-		for (int j = 0; j < col; ++j)
-		{
-			A[i - 1][j] = arr[i][j];
-		}
-		for (int j = col + 1; j < n; ++j)
-		{
-			A[i - 1][j - 1] = arr[i][j];
-		}
-	}
-	return A;
 }
