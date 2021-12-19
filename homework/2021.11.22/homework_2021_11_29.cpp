@@ -1,4 +1,4 @@
-﻿// codewarsPLEASEDUDE.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+// codewarsPLEASEDUDE.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include <iostream>
@@ -20,7 +20,7 @@ int main()
 	double** M = inputmatrix<double>(n, n);
 	std::cout << "Определитель = " << determinant(M, n) << std::endl;
 	try//если определитель равен нулю, то поймаем ошибку
-	{ 
+	{
 		double** A = inversematrix(M, n);
 		std::cout << "Обратная матрица: " << std::endl;
 		printmatrix(A, n, n);
