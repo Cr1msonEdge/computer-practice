@@ -4,8 +4,6 @@
 void swapcol(double** arr, double n, int col1, int col2);
 double determinant(double** arr, int n);
 double** inversematrix(double** arr, int n);
-int digitcount(double x);
-int maxdigitcount(double** M, int n, int m);
 void printmatrix(double** M, int n, int m);
 
 template <typename T>
