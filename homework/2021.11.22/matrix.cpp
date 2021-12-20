@@ -4,7 +4,7 @@
 
 void swapcol(double** arr, double n, int col1, int col2) { //нужно чтобы получить ненулевые элементы на главной диагонали
 	for (int i = 0; i < n; ++i) {
-		std::swap(arr[col1], arr[col2]);
+		std::swap(arr[i][col1], arr[i][col2]);
 	}
 }
 
@@ -77,16 +77,13 @@ double** inversematrix(double** arr, int n)
 		for (int j = 0; j < n; ++j)
 		{
 			double** D = minormatrix(arr, n, j, i); // j i, потому что нужна транспонированная
-			M[i][j] = double(determinant(D, n - 1)) / det;
+			M[i][j] = (double(determinant(D, n - 1)) / det);
 			deletematrix(D, n - 1);
 			if ((i + j) % 2)// сумма индексов столбцов и строк
 			{
 				M[i][j] *= -1;
 			}
-			if (M[i][j] == 0)
-			{
-				M[i][j] = 0;
-			}
+			M[i][j] = (M[i][j] == 0 ? 0 : M[i][j]);
 			//во избежании появления -0
 		}
 	}
